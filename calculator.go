@@ -41,16 +41,19 @@ func decodeTemplate(temp string, op string) (a int, b int, isRoman bool, operate
 	if len(val) > 2 {
 		return 0, 0, false, "", fmt.Errorf("Выдача паники, так как формат математической операции не удовлетворяет заданию — два операнда и один оператор (+, -, /, *).")
 	}
-	aCheck, a := isRomanNum(val[0])
-	bCheck, b := isRomanNum(val[1])
+	aIsRoman, a := isRomanNum(val[0])
+	bIsRoman, b := isRomanNum(val[1])
 	operate = op
-	if aCheck != bCheck {
+	if aIsRoman != bIsRoman {
 		return 0, 0, false, "", fmt.Errorf("Выдача паники, так как используются одновременно разные системы счисления.")
 	}
-	if aCheck && a <= b {
+	if aIsRoman && a <= b {
 		return 0, 0, false, "", fmt.Errorf("Выдача паники, в римской системе счисления нет отрицательных чисел и 0.")
 	}
-	return a, b, aCheck, operate, nil
+	if a < 1 || b < 1 {
+		return 0, 0, false, "", fmt.Errorf("Выдача паники, операции проводятся только с натуральными числами")
+	}
+	return a, b, aIsRoman, operate, nil
 }
 
 func operate(a int, b int, op string) (int, error) {
