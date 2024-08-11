@@ -50,7 +50,7 @@ func decodeTemplate(temp string, op string) (a int, b int, isRoman bool, operate
 	if aIsRoman && a <= b {
 		return 0, 0, false, "", fmt.Errorf("Выдача паники, в римской системе счисления нет отрицательных чисел и 0.")
 	}
-	if a < 1 || b < 1 {
+	if a < 1 || b < 1 && a > 10 || b > 10 {
 		return 0, 0, false, "", fmt.Errorf("Выдача паники, операции проводятся только с натуральными числами")
 	}
 	return a, b, aIsRoman, operate, nil
